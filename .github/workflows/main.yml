@@ -1,0 +1,32 @@
+name: Run Data Preprocessing
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - preprocessing/energy_efficiency_data.csv
+      - preprocessing/automate_aininurpadilah.py
+
+
+jobs:
+  preprocess:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12.7'
+    - name: Clean MLflow logs
+      run: rm -rf mlruns
+      
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pandas numpy mlflow==2.18.0
+
+    - name: Run Preprocessing
+      run: python Preprocessing/automate_aininurpadilah.py
